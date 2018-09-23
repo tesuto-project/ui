@@ -1,10 +1,26 @@
 version: 2
 jobs:
-  build:
+  install:
     working_directory: ~/tmp
     docker:
       - image: tesutoproject/ui:0.2
     steps:
       - checkout
       - run: npm install
-      - run: npm test
+  test:
+    steps:
+    - run: npm run test
+  lint:
+    steps:
+      - run: npm run lint
+workflows:
+  version: 2
+  ui:
+    jobs:
+      - install
+      - test:
+          requires:
+            - install
+      - lint:
+          requires:
+            - install
