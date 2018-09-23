@@ -9,6 +9,7 @@ jobs:
       - run: npm install
       - persist_to_workspace:
           root: ~/tmp
+          path: ~/tmp/*
   test:
     working_directory: ~/tmp
     docker:
