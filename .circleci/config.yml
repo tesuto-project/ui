@@ -27,6 +27,15 @@ jobs:
       - attach_workspace:
           at: ~/tmp
       - run: npm run lint
+  build:
+    working_directory: ~/tmp
+    docker:
+      - image: tesutoproject/ui:0.2
+    steps:
+      - attach_workspace:
+          at: ~/tmp
+      - run: npm run build -- --aot
+
 workflows:
   version: 2
   ui:
@@ -38,3 +47,7 @@ workflows:
       - lint:
           requires:
             - install
+      - build:
+          requires:
+            - lint
+            - test
