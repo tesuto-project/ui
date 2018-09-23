@@ -1,0 +1,92 @@
+version: 2
+jobs:
+  install:
+    working_directory: ~/tmp
+    docker:
+      - image: tesutoproject/ui:0.2
+    steps:
+      - checkout
+      - run: npm install
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+  test:
+    working_directory: ~/tmp
+    docker:
+     - image: tesutoproject/ui:0.2
+    steps:
+      - attach_workspace:
+          at: ~/tmp
+      - run: npm run test
+  lint:
+    working_directory: ~/tmp
+    docker:
+      - image: tesutoproject/ui:0.2
+    steps:
+      - attach_workspace:
+          at: ~/tmp
+      - run: npm run lint
+  build:
+    working_directory: ~/tmp
+    docker:
+      - image: tesutoproject/ui:0.2
+    steps:
+      - attach_workspace:
+          at: ~/tmp
+      - run: npm run build -- --aot
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+  deploy_master:
+    working_directory: ~/tmp
+    docker:
+      - image: cgswong/aws
+    steps:
+      - attach_workspace:
+          at: ~/tmp
+      - run: aws s3 sync ./dist/ui s3://master.tesuto/ --delete
+  deploy_develop:
+    working_directory: ~/tmp
+    docker:
+    - image: cgswong/aws
+    steps:
+    - attach_workspace:
+        at: ~/tmp
+    - run: aws s3 sync ./dist/ui s3://develop.tesuto/ --delete
+
+workflows:
+  version: 2
+  ui:
+    jobs:
+      - install
+      - test:
+          requires:
+            - install
+      - lint:
+          requires:
+            - install
+      - build:
+          requires:
+            - lint
+            - test
+          filters:
+            branches:
+              only:
+                - develop
+                - master
+      - deploy_master:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+              - master
+      - deploy_master:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+              - develop
