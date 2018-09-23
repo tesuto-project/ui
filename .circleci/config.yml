@@ -7,18 +7,23 @@ jobs:
     steps:
       - checkout
       - run: npm install
+      - persist_to_workspace:
+          root: ~/tmp
   test:
     working_directory: ~/tmp
     docker:
      - image: tesutoproject/ui:0.2
     steps:
-    - run: npm run test
+      - attach_workspace:
+          at: ~/tmp
+      - run: npm run test
   lint:
     working_directory: ~/tmp
     docker:
       - image: tesutoproject/ui:0.2
     steps:
-      - run: ls -l
+      - attach_workspace:
+          at: ~/tmp
       - run: npm run lint
 workflows:
   version: 2
