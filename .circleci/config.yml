@@ -18,6 +18,7 @@ jobs:
     docker:
       - image: tesutoproject/ui:0.2
     steps:
+      - run: ls -l
       - run: npm run lint
 workflows:
   version: 2
