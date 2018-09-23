@@ -35,6 +35,15 @@ jobs:
       - attach_workspace:
           at: ~/tmp
       - run: npm run build -- --aot
+  deploy_master:
+    working_directory: ~/tmp
+    docker:
+      - image: cgswong/aws
+    steps:
+      - attach_workspace:
+          at: ~/tmp
+      - run: aws s3 sync /dist s3://master.tesuto/ --delete
+
 
 workflows:
   version: 2
@@ -51,8 +60,6 @@ workflows:
           requires:
             - lint
             - test
-          filters:
-            branches:
-              only:
-                - master
-                - develop
+      - deploy_master:
+          requires:
+            - build
