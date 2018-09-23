@@ -83,7 +83,7 @@ workflows:
             branches:
               only:
               - master
-      - deploy_master:
+      - deploy_develop:
           requires:
             - build
           filters:
