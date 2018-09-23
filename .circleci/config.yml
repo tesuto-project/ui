@@ -27,14 +27,6 @@ jobs:
       - attach_workspace:
           at: ~/tmp
       - run: npm run lint
-  e2e:
-    working_directory: ~/tmp
-    docker:
-      - image: rogargon/angular-e2e
-    steps:
-    - attach_workspace:
-        at: ~/tmp
-    - run: npm run e2e
 workflows:
   version: 2
   ui:
@@ -44,8 +36,5 @@ workflows:
           requires:
             - install
       - lint:
-          requires:
-            - install
-      - e2e:
           requires:
             - install
