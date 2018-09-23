@@ -47,7 +47,7 @@ jobs:
       - attach_workspace:
           at: ~/tmp
       - run: ls -l
-      - run: aws s3 sync ./dist s3://master.tesuto/ --delete
+      - run: aws s3 sync ./dist/ui s3://master.tesuto/ --delete
 
 
 workflows:
