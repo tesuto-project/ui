@@ -71,11 +71,11 @@ workflows:
           requires:
             - lint
             - test
-            filters:
-              branches:
-                only:
-                  - develop
-                  - master
+          filters:
+            branches:
+              only:
+                - develop
+                - master
       - deploy_master:
           requires:
             - build
