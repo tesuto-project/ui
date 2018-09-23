@@ -31,10 +31,6 @@ jobs:
     working_directory: ~/tmp
     docker:
       - image: tesutoproject/ui:0.2
-    branches:
-      only:
-        - master
-        - develop
     steps:
       - attach_workspace:
           at: ~/tmp
@@ -55,3 +51,8 @@ workflows:
           requires:
             - lint
             - test
+          filters:
+            branches:
+              only:
+                - master
+                - develop
