@@ -8,8 +8,8 @@ jobs:
       - checkout
       - run: npm install
       - persist_to_workspace:
-          root: ~/tmp
-          path: ~/tmp/*
+          root: .
+          path: ./*
   test:
     working_directory: ~/tmp
     docker:
