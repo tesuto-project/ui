@@ -35,6 +35,10 @@ jobs:
       - attach_workspace:
           at: ~/tmp
       - run: npm run build -- --aot
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
   deploy_master:
     working_directory: ~/tmp
     docker:
