@@ -8,9 +8,15 @@ jobs:
       - checkout
       - run: npm install
   test:
+    working_directory: ~/tmp
+      docker:
+      - image: tesutoproject/ui:0.2
     steps:
     - run: npm run test
   lint:
+    working_directory: ~/tmp
+      docker:
+      - image: tesutoproject/ui:0.2
     steps:
       - run: npm run lint
 workflows:
